@@ -1,5 +1,8 @@
 # Where am I?
-A simple react app using Google Maps API. 
+A simple react app that shows altitude of requested location using Google Maps API. 
+
+## Link of the site
+[Check it out](https://show-my-altitude.netlify.app/)
 
 ## Start development server
 ```
