@@ -17,23 +17,28 @@ export class MapContainer extends Component {
       zoom: 14,
       elevations: [],
       elevation: 0,
-      resolution: 0
+      resolution: 0,
+      hide: true
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
+    
     if (e.target.id === "latitude") {
       this.setState({
-        latitude: parseFloat(e.target.value)
+        latitude: parseFloat(e.target.value),
+        hide: true
       });
     } else if (e.target.id === "zoom") {
       this.setState({
-        zoom: parseInt(e.target.value)
+        zoom: parseInt(e.target.value),
+        hide: true
       });
     } else {
       this.setState({
-        longitude: parseFloat(e.target.value)
+        longitude: parseFloat(e.target.value),
+        hide: true
       });
     }
   }
@@ -57,7 +62,8 @@ export class MapContainer extends Component {
         that.setState({
           elevations: results.map(result => result),
           elevation: results[0].elevation,
-          resolution: results[0].resolution
+          resolution: results[0].resolution,
+          hide: false
         });
         //if you look at the api response, you can see that
         //lat and lng are funcions, so retrieve then like:
@@ -71,7 +77,7 @@ export class MapContainer extends Component {
   render() {
     return (<div className="map-container">
       <div className="map-container__input_wrapper">
-      <div className="map-container__results">
+      <div className="map-container__results" style={{opacity: this.state.hide?'0':null}}>
         <h3>Your current data:</h3>
           Elevation: {this.state.elevation} [meters]
           <br />
