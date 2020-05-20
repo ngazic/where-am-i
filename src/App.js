@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <h1>Where am I?</h1>
-      <MapContainer name="Begara" />
+      <MapContainer />
     </div>
   );
 }
