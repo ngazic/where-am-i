@@ -1,6 +1,8 @@
-import React, { Component } from "react";
 import "../App";
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import React, {Component} from "react";
+import {Map, GoogleApiWrapper} from "google-maps-react";
+
+//Paste your API key here:
 const API_KEY = "AIzaSyBZc-HHEjnizREs18ClWj08edyomTsv9hM";
 
 const mapStyles = {
@@ -24,7 +26,6 @@ export class MapContainer extends Component {
   }
 
   handleChange(e) {
-    
     if (e.target.id === "latitude") {
       this.setState({
         latitude: parseFloat(e.target.value),
@@ -41,6 +42,20 @@ export class MapContainer extends Component {
         hide: true
       });
     }
+  }
+
+  updateLocation(a, b, c) {
+    this.setState({
+      latitude: c.latLng.lat(),
+      longitude: c.latLng.lng(),
+      hide: true
+    })
+  }
+
+  zoomHandler(map, eventData) {
+    this.setState({
+      zoom: parseInt(eventData.zoom)
+    });
   }
 
   find() {
@@ -77,10 +92,15 @@ export class MapContainer extends Component {
   render() {
     return (<div className="map-container">
       <div className="map-container__input_wrapper">
-      <div className="map-container__results" style={{opacity: this.state.hide?'0':null}}>
-        <h3>Your current data:</h3>
-          Elevation: {this.state.elevation} [meters]
-          <br />
+        <div className="map-container__results" style={{
+            opacity: this.state.hide
+              ? "0"
+              : null
+          }}>
+          <h3>Your current data:</h3>
+          Elevation: {this.state.elevation}
+          [meters]
+          <br/>
           Resoultion: {this.state.resolution}
         </div>
         <h3>Enter Coordinates:</h3>
@@ -88,31 +108,32 @@ export class MapContainer extends Component {
           <label htmlFor="latitude" className="map-container__label">
             Latitude
           </label>
-          <input type="number" id="latitude" onChange={this.handleChange} value={this.state.latitude} className="map-container__input" />
+          <input type="number" id="latitude" onChange={this.handleChange} value={this.state.latitude} className="map-container__input"/>
           <label htmlFor="longitude" className="map-container__label">
             Longitude
           </label>
-          <input type="number" id="longitude" onChange={this.handleChange} value={this.state.longitude} className="map-container__input" />
+          <input type="number" id="longitude" onChange={this.handleChange} value={this.state.longitude} className="map-container__input"/>
           <label htmlFor="zoom" className="map-container__label">
             Zoom
           </label>
-          <input type="number" id="zoom" onChange={this.handleChange} value={this.state.zoom} className="map-container__input" />
+          <input type="number" id="zoom" onChange={this.handleChange} value={this.state.zoom} className="map-container__input"/>
         </div>
-        <button className="map-container__button" onClick={this.find.bind(this)}>Find Elevation</button>
-      
+        <button className="map-container__button" onClick={this.find.bind(this)}>
+          Find Elevation
+        </button>
       </div>
 
       <div className="map-container__map">
         <Map google={this.props.google} zoom={this.state.zoom} style={mapStyles} center={{
-          lat: this.state.latitude,
-          lng: this.state.longitude
-        }} initialCenter={{
-          lat: this.state.latitude,
-          lng: this.state.longitude
-        }} ter="ter" />
+            lat: this.state.latitude,
+            lng: this.state.longitude
+          }} initialCenter={{
+            lat: this.state.latitude,
+            lng: this.state.longitude
+          }} ter="ter" onZoomChanged={this.zoomHandler.bind(this)} onClick={this.updateLocation.bind(this)}/>
       </div>
     </div>);
   }
 }
 
-export default GoogleApiWrapper({ apiKey: API_KEY })(MapContainer);
+export default GoogleApiWrapper({apiKey: API_KEY})(MapContainer);
